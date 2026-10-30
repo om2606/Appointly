@@ -8,6 +8,11 @@ Appointly is an appointment booking application built with **FastAPI, SQLite, HT
 
 ![Appointly Appointment Booking Page](screenshots/appointly-booking-page.png)
 
+### API Documentation
+
+![Appointly API Documentation](screenshots/appointly-api-docs.png)
+
+
 ## Features
 
 - Create new appointments
