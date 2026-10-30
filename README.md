@@ -13,6 +13,23 @@ Appointly is an appointment booking application built with **FastAPI, SQLite, HT
 ![Appointly API Documentation](screenshots/appointly-api-docs.png)
 
 
+## System Architecture
+
+The following diagram shows how the Appointly frontend, FastAPI backend, SQLite database, n8n automation, and Telegram reminders interact.
+
+```mermaid
+flowchart TD
+    A["Frontend: HTML, CSS, JavaScript"] <--> B["FastAPI Backend"]
+    B <--> C[("SQLite Database")]
+    D["n8n Automation"] --> E["Fetch booked appointments"]
+    E -->|"GET /appointments/booked"| B
+    E --> F{"Reminder due?"}
+    F -->|"Yes"| G["Telegram Bot"]
+    G --> H["Send appointment reminder"]
+    G --> I["Mark reminder as sent"]
+    I -->|"PATCH reminder-sent"| B
+```
+
 ## Features
 
 - Create new appointments
