@@ -1,0 +1,22 @@
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local virtual environments
+venv/
+.venv/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Local SQLite database and database backups
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Local development files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f8fc">
+  <title>Appointly | Appointment Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Appointly home">
+        <span class="brand-mark">A</span>
+        <span>appointly<span class="brand-dot">.</span><small>APPOINTMENT MANAGER</small></span>
+      </a>
+
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="side-nav">
+        <button class="nav-item active" data-view="dashboard">
+          <span class="nav-icon">▦</span> Dashboard
+        </button>
+        <button class="nav-item" data-view="appointments">
+          <span class="nav-icon">▣</span> Appointments
+          <span class="nav-count" id="navCount">0</span>
+        </button>
+        <button class="nav-item" data-view="calendar">
+          <span class="nav-icon">▦</span> Calendar
+        </button>
+      </nav>
+
+      <div class="workspace-label management-label">MANAGEMENT</div>
+      <nav class="side-nav">
+        <button class="nav-item" data-view="providers">
+          <span class="nav-icon">♙</span> Providers
+        </button>
+        <button class="nav-item" data-view="reminders">
+          <span class="nav-icon">◷</span> Reminder status
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-symbol">✦</div>
+          <strong>Stay organized</strong>
+          <p>Manage your appointments from one simple workspace.</p>
+          <button id="helpButton" class="help-link">How it works <span>↗</span></button>
+        </div>
+        <div class="profile-row">
+          <div class="avatar">AM</div>
+          <div class="profile-info">
+            <strong>Appointment Manager</strong>
+            <span>Local workspace</span>
+          </div>
+          <span class="profile-menu">•••</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="menuButton" class="icon-button menu-button" aria-label="Open menu">☰</button>
+          <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumbTitle">Dashboard</strong></div>
+        </div>
+        <div class="topbar-right">
+          <span class="connection-status"><i id="connectionDot"></i><span id="connectionText">Connecting to API…</span></span>
+          <button class="top-avatar" title="Local workspace">AM</button>
+        </div>
+      </header>
+
+      <section class="page-section" id="dashboardView">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow" id="welcomeDate">YOUR WORKSPACE</div>
+            <h1>Good to see you<span class="heading-period">.</span></h1>
+            <p>Here's what's happening with your appointments.</p>
+          </div>
+          <button class="primary-button" id="addAppointmentButton"><span>＋</span> New appointment</button>
+        </div>
+
+        <div class="stat-grid">
+          <article class="stat-card">
+            <div class="stat-top"><span>Total appointments</span><span class="stat-icon purple">▣</span></div>
+            <div class="stat-value" id="totalStat">—</div>
+            <div class="stat-foot">All appointments in the system</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Booked</span><span class="stat-icon green">✓</span></div>
+            <div class="stat-value" id="bookedStat">—</div>
+            <div class="stat-foot"><span class="status-dot green-dot"></span> Active bookings</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Today's appointments</span><span class="stat-icon blue">◷</span></div>
+            <div class="stat-value" id="todayStat">—</div>
+            <div class="stat-foot">Scheduled for today</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Cancelled</span><span class="stat-icon orange">↗</span></div>
+            <div class="stat-value" id="cancelledStat">—</div>
+            <div class="stat-foot">Cancelled bookings</div>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel appointments-panel">
+            <div class="panel-heading">
+              <div><h2>Recent appointments</h2><p>Your latest bookings at a glance.</p></div>
+              <button class="text-button" data-open-view="appointments">View all <span>→</span></button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>CLIENT</th><th>PROVIDER</th><th>DATE & TIME</th><th>STATUS</th><th></th></tr></thead>
+                <tbody id="recentAppointments">
+                  <tr><td colspan="5" class="empty-cell">Connecting to your API…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel overview-panel">
+            <div class="panel-heading"><div><h2>Appointment overview</h2><p>Current booking distribution.</p></div></div>
+            <div class="overview-total"><strong id="overviewTotal">—</strong><span>appointments</span></div>
+            <div class="distribution-bar"><span id="bookedBar"></span><span id="cancelledBar"></span><span id="otherBar"></span></div>
+            <div class="legend-row"><span><i class="legend-dot booked-legend"></i>Booked</span><strong id="overviewBooked">—</strong></div>
+            <div class="legend-row"><span><i class="legend-dot cancelled-legend"></i>Cancelled</span><strong id="overviewCancelled">—</strong></div>
+            <div class="legend-row"><span><i class="legend-dot other-legend"></i>Other</span><strong id="overviewOther">—</strong></div>
+            <div class="overview-note"><span>✦</span><p>Keep appointment details up to date to make scheduling easier.</p></div>
+          </section>
+        </div>
+
+        <section class="panel quick-actions">
+          <div><h2>Quick actions</h2><p>Manage your appointments in a few clicks.</p></div>
+          <button class="quick-action" id="quickAdd"><span class="quick-icon purple">＋</span><span><strong>Add appointment</strong><small>Create a new booking</small></span><b>→</b></button>
+          <button class="quick-action" data-open-view="appointments"><span class="quick-icon blue">▤</span><span><strong>View appointments</strong><small>Search and manage bookings</small></span><b>→</b></button>
+        </section>
+      </section>
+
+      <section class="page-section hidden" id="appointmentsView">
+        <div class="page-heading">
+          <div><div class="eyebrow">SCHEDULING</div><h1>Appointments<span class="heading-period">.</span></h1><p>View, create, and manage appointment records.</p></div>
+          <button class="primary-button" id="addAppointmentButton2"><span>＋</span> New appointment</button>
+        </div>
+        <section class="panel">
+          <div class="toolbar">
+            <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search client, provider, email…"></label>
+            <select id="statusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="booked">Booked</option><option value="cancelled">Cancelled</option></select>
+            <input type="date" id="dateFilter" aria-label="Filter by appointment date">
+            <button class="secondary-button" id="clearFilters">Clear filters</button>
+            <button class="icon-button" id="refreshButton" title="Refresh appointments">↻</button>
+          </div>
+          <div class="table-wrap">
+            <table class="full-table">
+              <thead><tr><th>CLIENT</th><th>EMAIL</th><th>PROVIDER</th><th>DATE</th><th>TIME</th><th>DURATION</th><th>STATUS</th><th>ACTIONS</th></tr></thead>
+              <tbody id="allAppointments"><tr><td colspan="8" class="empty-cell">Loading appointments…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="resultsCount">0 appointments</span><span>Live data from FastAPI</span></div>
+        </section>
+      </section>
+
+      <section class="page-section hidden" id="calendarView">
+        <div class="page-heading"><div><div class="eyebrow">SCHEDULING</div><h1>Calendar<span class="heading-period">.</span></h1><p>Explore your appointments by date.</p></div><button class="primary-button" id="calendarAdd"><span>＋</span> New appointment</button></div>
+        <section class="panel">
+          <div class="calendar-toolbar"><button class="secondary-button" id="previousMonth">← Previous</button><h2 id="calendarMonth"></h2><button class="secondary-button" id="nextMonth">Next →</button></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div id="selectedDateAppointments" class="selected-date-list"><p class="muted">Select a date to view appointments.</p></div>
+        </section>
+      </section>
+
+      <section class="page-section hidden" id="providersView">
+        <div class="page-heading"><div><div class="eyebrow">DIRECTORY</div><h1>Providers<span class="heading-period">.</span></h1><p>Providers currently listed in your appointment records.</p></div></div>
+        <section class="provider-grid" id="providersGrid"></section>
+      </section>
+
+      <section class="page-section hidden" id="remindersView">
+        <div class="page-heading"><div><div class="eyebrow">AUTOMATION</div><h1>Reminder status<span class="heading-period">.</span></h1><p>Inspect reminder processing information from the API.</p></div><button class="secondary-button" id="reminderRefresh">↻ Refresh</button></div>
+        <section class="panel">
+          <div class="notice"><strong>Delivery status note</strong><p>The current backend records <code>reminder_sent</code> as a processing flag. Since no email or Telegram service is connected, this does not confirm that a message was delivered.</p></div>
+          <div class="table-wrap"><table><thead><tr><th>CLIENT</th><th>PROVIDER</th><th>APPOINTMENT</th><th>PROCESSING</th></tr></thead><tbody id="remindersTable"></tbody></table></div>
+        </section>
+      </section>
+
+      <footer class="footer"><span>© <span id="footerYear"></span> Appointly</span><span>Appointment management workspace <i></i> Connected to your local API</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="appointmentModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header"><div><div class="eyebrow">APPOINTMENT DETAILS</div><h2 id="modalTitle">New appointment</h2><p>Fill in the details below to save a booking.</p></div><button class="icon-button close-modal" id="closeModal" aria-label="Close dialog">×</button></div>
+      <form id="appointmentForm">
+        <input type="hidden" id="appointmentId">
+        <div class="form-grid">
+          <label class="form-field"><span>Customer name *</span><input id="customerName" required maxlength="100" placeholder="e.g. Alex Morgan"></label>
+          <label class="form-field"><span>Email address *</span><input id="customerEmail" type="email" required maxlength="254" placeholder="alex@example.com"></label>
+          <label class="form-field"><span>Provider name *</span><input id="providerName" required maxlength="100" placeholder="e.g. Dr. Shah"></label>
+          <label class="form-field"><span>Appointment date *</span><input id="appointmentDate" type="date" required></label>
+          <label class="form-field"><span>Appointment time *</span><input id="appointmentTime" type="time" required></label>
+          <label class="form-field"><span>Duration (minutes) *</span><select id="durationMinutes" required><option value="15">15 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option><option value="90">90 minutes</option><option value="120">120 minutes</option><option value="180">180 minutes</option></select></label>
+          <label class="form-field full-field"><span>Status</span><select id="appointmentStatus"><option value="booked">Booked</option><option value="cancelled">Cancelled</option></select></label>
+        </div>
+        <div class="form-error hidden" id="formError"></div>
+        <div class="modal-actions"><button type="button" class="secondary-button" id="cancelForm">Cancel</button><button type="submit" class="primary-button" id="saveAppointment">Save appointment <span>→</span></button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <div class="confirm-backdrop hidden" id="confirmDialog" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="confirm-card"><div class="confirm-symbol">!</div><h2 id="confirmTitle">Delete appointment?</h2><p id="confirmText">This action cannot be undone.</p><div class="modal-actions"><button class="secondary-button" id="confirmCancel">Keep appointment</button><button class="danger-button" id="confirmDelete">Delete</button></div></div>
+  </div>
+</body>
+</html>
