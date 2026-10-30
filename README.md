@@ -65,7 +65,7 @@ Replace `YOUR_GITHUB_REPOSITORY_URL` with your actual repository URL.
 ### 2. Install dependencies
 
 ```bash
-python -m pip install fastapi uvicorn
+python -m pip install -r requirements.txt
 ```
 
 Install any additional dependencies required by your project.
