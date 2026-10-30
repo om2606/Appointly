@@ -2,6 +2,12 @@
 
 Appointly is an appointment booking application built with **FastAPI, SQLite, HTML, CSS, JavaScript, n8n, and Telegram**. It allows users to manage appointments and automates appointment reminders through Telegram.
 
+## Screenshots
+
+### Appointment Booking Page
+
+![Appointly Appointment Booking Page](screenshots/appointly-booking-page.png)
+
 ## Features
 
 - Create new appointments
